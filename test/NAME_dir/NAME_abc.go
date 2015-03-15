@@ -1,0 +1,3 @@
+kldjfldjksl
+
+{{.NAME}} := "elefant"
