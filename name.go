@@ -7,13 +7,22 @@ import (
 	"unicode/utf8"
 )
 
-type Name struct {
-	snakeName string
-}
-
-func New(name string) Name {
-	snakeName := toSnakeCase(name)
-	return Name{snakeName}
+func ToAllFormats(name string) map[string]string {
+	snakeCase := toSnakeCase(name)
+	camelCase := toCamelCase(snakeCase)
+	dromedarCase := toDromedarCase(snakeCase)
+	dasherized := toDasherized(snakeCase)
+	return map[string]string{
+		"original":     name,
+		"snakeCase":    snakeCase,
+		"camelCase":    camelCase,
+		"dromedarCase": dromedarCase,
+		"dasherized":   dasherized,
+		"sc":           snakeCase,
+		"cc":           camelCase,
+		"dc":           dromedarCase,
+		"da":           dasherized,
+	}
 }
 
 func toSnakeCase(name string) string {
@@ -24,12 +33,8 @@ func toSnakeCase(name string) string {
 	return noCap
 }
 
-func (n Name) SnakeCase() string {
-	return n.snakeName
-}
-
-func (n Name) CamelCase() string {
-	names := strings.Split(n.snakeName, "_")
+func toCamelCase(name string) string {
+	names := strings.Split(name, "_")
 	var capNames = make([]string, len(names))
 	for i, name := range names {
 		capNames[i] = capitalize(name)
@@ -37,20 +42,20 @@ func (n Name) CamelCase() string {
 	return strings.Join(capNames, "")
 }
 
-func (n Name) DromedarCase() string {
-	return lowerize(n.CamelCase())
-}
-
-func (n Name) Dasherize() string {
-	return strings.Replace(n.snakeName, "_", "-", 1)
-}
-
 func capitalize(s string) string {
 	r, n := utf8.DecodeRuneInString(s)
 	return string(unicode.ToUpper(r)) + s[n:]
 }
 
+func toDromedarCase(name string) string {
+	return lowerize(toCamelCase(name))
+}
+
 func lowerize(s string) string {
 	r, n := utf8.DecodeRuneInString(s)
 	return string(unicode.ToLower(r)) + s[n:]
+}
+
+func toDasherized(name string) string {
+	return strings.Replace(name, "_", "-", 1)
 }

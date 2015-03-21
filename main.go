@@ -71,5 +71,5 @@ func main() {
 	fmt.Println("verbose:", verbose)
 	fmt.Println("templateDir:", templateDir)
 	dir := templateDir + "/" + template
-	generate(dir, name)
+	generate(dir, name.ToAllFormats(name))
 }
