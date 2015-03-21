@@ -37,7 +37,7 @@ func (n Name) DromedarCase() string {
 }
 
 func (n Name) Dasherize() string {
-	return strings.Replace(n.snakeName, "_", "-")
+	return strings.Replace(n.snakeName, "_", "-", 1)
 }
 
 func capitalize(s string) string {
