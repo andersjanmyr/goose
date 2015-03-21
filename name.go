@@ -1,6 +1,7 @@
 package main
 
 import (
+	"regexp"
 	"strings"
 	"unicode"
 	"unicode/utf8"
@@ -16,7 +17,11 @@ func New(name string) Name {
 }
 
 func toSnakeCase(name string) string {
-	return name
+	noDash := strings.Replace(name, "-", "_", 1)
+	r := regexp.MustCompile("([A-Z])")
+	withUnderscore := r.ReplaceAllString(noDash[1:], "_$1")
+	noCap := strings.ToLower(noDash[0:1] + withUnderscore)
+	return noCap
 }
 
 func (n Name) SnakeCase() string {

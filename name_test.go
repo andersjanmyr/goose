@@ -27,6 +27,33 @@ func TestDasherize(t *testing.T) {
 	actual := name.Dasherize()
 	expected := "brave-tapir"
 	if actual != expected {
-		t.Errorf("DromedarCase(): %v, expected %v", actual, expected)
+		t.Errorf("Dasherize(): %v, expected %v", actual, expected)
+	}
+}
+
+func TestSnakeCaseDasherized(t *testing.T) {
+	name := New("brave-tapir")
+	actual := name.SnakeCase()
+	expected := "brave_tapir"
+	if actual != expected {
+		t.Errorf("SnakeCase(): %v, expected %v", actual, expected)
+	}
+}
+
+func TestSnakeCaseDromedar(t *testing.T) {
+	name := New("braveTapir")
+	actual := name.SnakeCase()
+	expected := "brave_tapir"
+	if actual != expected {
+		t.Errorf("SnakeCase(): %v, expected %v", actual, expected)
+	}
+}
+
+func TestSnakeCaseCamel(t *testing.T) {
+	name := New("BraveTapir")
+	actual := name.SnakeCase()
+	expected := "brave_tapir"
+	if actual != expected {
+		t.Errorf("SnakeCase(): %v, expected %v", actual, expected)
 	}
 }
