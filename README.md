@@ -14,7 +14,6 @@ $ chmod a+x /usr/local/bin/goose
 
 ```
 $ goose --verbose go demo
-$ goose --verbose go demo
 OPTIONS:
 verbose: true
 template: go
