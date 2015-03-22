@@ -22,9 +22,9 @@ var funcMap = map[string]interface{}{
 	"dasherized":   Dasherized,
 }
 
-func generate(templateDir string, mappings map[string]string) {
+func generate(templateDir string, outputDir string, mappings map[string]string) {
 	copyFile := func(filename string, info os.FileInfo, err error) error {
-		newPath := newFilename(templateDir, filename, mappings)
+		newPath := newFilename(templateDir, outputDir, filename, mappings)
 		if info.IsDir() {
 			log.Printf("Creating dir %v\n", newPath)
 			os.MkdirAll(newPath, 0700)
@@ -48,8 +48,8 @@ func generate(templateDir string, mappings map[string]string) {
 	filepath.Walk(templateDir, copyFile)
 }
 
-func newFilename(templateDir string, filename string, mappings map[string]string) string {
-	newPath := strings.Replace(filename, templateDir, mappings["NAME"], -1)
+func newFilename(templateDir string, outputDir string, filename string, mappings map[string]string) string {
+	newPath := strings.Replace(filename, templateDir, outputDir, -1)
 	for k, v := range mappings {
 		newPath = replace(newPath, k, v)
 	}
@@ -67,10 +67,12 @@ func replace(name string, key string, value string) string {
 
 func main() {
 	var templateDir string
+	var outputDir string
 
 	flag.BoolVar(&verbose, "verbose", false, "Be verbose")
 	flag.StringVar(&templateDir, "templatedir", os.Getenv("HOME")+"/.goose",
 		"Directory where templates are stored")
+	flag.StringVar(&outputDir, "outputdir", "", "Output directory, default NAME")
 	flag.Parse()
 	program := path.Base(os.Args[0])
 	log.SetFlags(0)
@@ -81,17 +83,21 @@ func main() {
 	args := flag.Args()
 	log.Println(args)
 	if len(args) < 2 {
-		fmt.Fprintf(os.Stderr, "Usage: %v [--templatedir <dir>] [--verbose] <template> <name>\n", program)
+		fmt.Fprintf(os.Stderr, "Usage: %v [--templatedir <dir>] [--outputdir <dir>] [--verbose] <template> <name>\n", program)
 		os.Exit(1)
 	}
 	template := args[0]
 	name := args[1]
+	if outputDir == "" {
+		outputDir = name
+	}
 
 	log.Println("OPTIONS:")
 	log.Println("verbose:", verbose)
 	log.Println("template:", template)
 	log.Println("name:", name)
 	log.Println("templateDir:", templateDir)
+	log.Println("outputDir:", outputDir)
 
 	selectedTemplateDir := filepath.Join(templateDir, template)
 	if _, err := os.Stat(selectedTemplateDir); os.IsNotExist(err) {
@@ -99,5 +105,5 @@ func main() {
 		fmt.Println("Override the default directory with --templatedir <dir>")
 		os.Exit(1)
 	}
-	generate(selectedTemplateDir, map[string]string{"NAME": name})
+	generate(selectedTemplateDir, outputDir, map[string]string{"NAME": name})
 }
