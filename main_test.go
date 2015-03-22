@@ -12,3 +12,11 @@ func TestGenerate(t *testing.T) {
 	os.Chdir("..")
 	os.RemoveAll("tmp")
 }
+
+func TestNewFilenameDc(t *testing.T) {
+	actual := newFilename("~/.gooserc", "prefixNAME.ccsuffix", map[string]string{"NAME": "my-name"})
+	expected := "prefixMyNamesuffix"
+	if actual != expected {
+		t.Errorf("newFilename(): %v, expected %v", actual, expected)
+	}
+}

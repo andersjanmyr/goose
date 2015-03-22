@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"flag"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"os"
 	"path"
@@ -46,9 +47,20 @@ func generate(templateDir string, mappings map[string]string) {
 	filepath.Walk(templateDir, copyFile)
 }
 
-func newFilename(templateDir string, path string, mappings map[string]string) string {
-	newPath := strings.Replace(path, templateDir, ".", -1)
-	return strings.Replace(newPath, "NAME", mappings["NAME"], -1)
+func newFilename(templateDir string, filename string, mappings map[string]string) string {
+	newPath := strings.Replace(filename, templateDir, ".", -1)
+	for k, v := range mappings {
+		newPath = replace(newPath, k, v)
+	}
+	return newPath
+}
+
+func replace(name string, key string, value string) string {
+	tmp := strings.Replace(name, key+".cc", CamelCase(value), -1)
+	tmp = strings.Replace(tmp, key+".da", Dasherized(value), -1)
+	tmp = strings.Replace(tmp, key+".dc", DromedarCase(value), -1)
+	tmp = strings.Replace(tmp, key+".sc", SnakeCase(value), -1)
+	return tmp
 }
 
 func main() {
@@ -58,6 +70,10 @@ func main() {
 	flag.StringVar(&templateDir, "templatedir", "~/.goose",
 		"Directory where templates are stored")
 	flag.Parse()
+	log.SetPrefix("")
+	if !verbose {
+		log.SetOutput(ioutil.Discard)
+	}
 
 	program := path.Base(os.Args[0])
 	args := flag.Args()
@@ -69,10 +85,10 @@ func main() {
 	template := args[0]
 	name := args[1]
 
+	log.Println("verbose:", verbose)
 	log.Println("program:", program)
 	log.Println("template:", template)
 	log.Println("name:", name)
-	log.Println("verbose:", verbose)
 	log.Println("templateDir:", templateDir)
 	dir := templateDir + "/" + template
 	generate(dir, map[string]string{"NAME": name})
