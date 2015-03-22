@@ -70,12 +70,12 @@ func main() {
 	flag.StringVar(&templateDir, "templatedir", "~/.goose",
 		"Directory where templates are stored")
 	flag.Parse()
-	log.SetPrefix("")
+	program := path.Base(os.Args[0])
+	log.SetFlags(0)
 	if !verbose {
 		log.SetOutput(ioutil.Discard)
 	}
 
-	program := path.Base(os.Args[0])
 	args := flag.Args()
 	log.Println(args)
 	if len(args) < 2 {
@@ -85,8 +85,8 @@ func main() {
 	template := args[0]
 	name := args[1]
 
+	log.Println("OPTIONS:")
 	log.Println("verbose:", verbose)
-	log.Println("program:", program)
 	log.Println("template:", template)
 	log.Println("name:", name)
 	log.Println("templateDir:", templateDir)
