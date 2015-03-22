@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"flag"
 	"fmt"
+	"log"
 	"os"
 	"path"
 	"path/filepath"
@@ -13,24 +14,28 @@ import (
 
 var verbose bool
 
-func generate(templateDir string, name string) {
+var funcMap = map[string]interface{}{
+	"snakecase":    SnakeCase,
+	"camelcase":    CamelCase,
+	"dromedarcase": DromedarCase,
+	"dasherized":   DromedarCase,
+}
+
+func generate(templateDir string, mappings map[string]string) {
 	copyFile := func(path string, info os.FileInfo, err error) error {
-		newPath := newFilename(templateDir, path, name)
-		fmt.Printf("%v %v %#v\n", path, newPath, err)
+		newPath := newFilename(templateDir, path, mappings)
 		if info.IsDir() {
-			fmt.Printf("Creating dir %v\n", newPath)
+			log.Printf("Creating dir %v\n", newPath)
 			os.MkdirAll(newPath, 0700)
 		} else {
 			tmpl := template.Must(template.ParseFiles(path))
-			values := map[string]string{
-				"NAME": name,
-			}
+			tmpl.Funcs(funcMap)
 			f, err := os.Create(newPath)
 			if err != nil {
 				panic(err)
 			}
 			writer := bufio.NewWriter(f)
-			err = tmpl.Execute(writer, values)
+			err = tmpl.Execute(writer, mappings)
 			if err != nil {
 				panic(err)
 			}
@@ -42,9 +47,9 @@ func generate(templateDir string, name string) {
 	filepath.Walk(templateDir, copyFile)
 }
 
-func newFilename(templateDir string, path string, name string) string {
+func newFilename(templateDir string, path string, mappings map[string]string) string {
 	newPath := strings.Replace(path, templateDir, ".", -1)
-	return strings.Replace(newPath, "NAME", name, -1)
+	return strings.Replace(newPath, "NAME", mappings["NAME"], -1)
 }
 
 func main() {
@@ -57,7 +62,7 @@ func main() {
 
 	program := path.Base(os.Args[0])
 	args := flag.Args()
-	fmt.Println(args)
+	log.Println(args)
 	if len(args) < 2 {
 		fmt.Fprintf(os.Stderr, "Usage: %v [--verbose] <template> <name>\n", program)
 		os.Exit(1)
@@ -65,11 +70,11 @@ func main() {
 	template := args[0]
 	name := args[1]
 
-	fmt.Println("program:", program)
-	fmt.Println("template:", template)
-	fmt.Println("name:", name)
-	fmt.Println("verbose:", verbose)
-	fmt.Println("templateDir:", templateDir)
+	log.Println("program:", program)
+	log.Println("template:", template)
+	log.Println("name:", name)
+	log.Println("verbose:", verbose)
+	log.Println("templateDir:", templateDir)
 	dir := templateDir + "/" + template
-	generate(dir, name.ToAllFormats(name))
+	generate(dir, map[string]string{"NAME": name})
 }
