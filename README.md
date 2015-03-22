@@ -5,7 +5,8 @@ A tool for generating file structures, simpler than Thor and Yeoman.
 ## Installation
 
 ```
-$ curl https://github.com/andersjanmyr/goose/releases/download/v1.0.0/goose > /usr/local/bin
+$ curl https://github.com/andersjanmyr/goose/releases/download/v1.0.0/goose \
+  > /usr/local/bin
 $ chmod a+x /usr/local/bin/goose
 ```
 
