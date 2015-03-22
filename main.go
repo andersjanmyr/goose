@@ -69,7 +69,7 @@ func main() {
 	var templateDir string
 
 	flag.BoolVar(&verbose, "verbose", false, "Be verbose")
-	flag.StringVar(&templateDir, "templatedir", "~/.goose",
+	flag.StringVar(&templateDir, "templatedir", os.Getenv("HOME")+"/.goose",
 		"Directory where templates are stored")
 	flag.Parse()
 	program := path.Base(os.Args[0])
@@ -81,7 +81,7 @@ func main() {
 	args := flag.Args()
 	log.Println(args)
 	if len(args) < 2 {
-		fmt.Fprintf(os.Stderr, "Usage: %v [--verbose] <template> <name>\n", program)
+		fmt.Fprintf(os.Stderr, "Usage: %v [--templatedir <dir>] [--verbose] <template> <name>\n", program)
 		os.Exit(1)
 	}
 	template := args[0]
@@ -92,5 +92,12 @@ func main() {
 	log.Println("template:", template)
 	log.Println("name:", name)
 	log.Println("templateDir:", templateDir)
-	generate(filepath.Join(templateDir, template), map[string]string{"NAME": name})
+
+	selectedTemplateDir := filepath.Join(templateDir, template)
+	if _, err := os.Stat(selectedTemplateDir); os.IsNotExist(err) {
+		fmt.Printf("Template directory does not exist: %s\n", selectedTemplateDir)
+		fmt.Println("Override the default directory with --templatedir <dir>")
+		os.Exit(1)
+	}
+	generate(selectedTemplateDir, map[string]string{"NAME": name})
 }
