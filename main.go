@@ -18,18 +18,17 @@ var funcMap = map[string]interface{}{
 	"snakecase":    SnakeCase,
 	"camelcase":    CamelCase,
 	"dromedarcase": DromedarCase,
-	"dasherized":   DromedarCase,
+	"dasherized":   Dasherized,
 }
 
 func generate(templateDir string, mappings map[string]string) {
-	copyFile := func(path string, info os.FileInfo, err error) error {
-		newPath := newFilename(templateDir, path, mappings)
+	copyFile := func(filename string, info os.FileInfo, err error) error {
+		newPath := newFilename(templateDir, filename, mappings)
 		if info.IsDir() {
 			log.Printf("Creating dir %v\n", newPath)
 			os.MkdirAll(newPath, 0700)
 		} else {
-			tmpl := template.Must(template.ParseFiles(path))
-			tmpl.Funcs(funcMap)
+			tmpl := template.Must(template.New(path.Base(filename)).Funcs(funcMap).ParseFiles(filename))
 			f, err := os.Create(newPath)
 			if err != nil {
 				panic(err)
