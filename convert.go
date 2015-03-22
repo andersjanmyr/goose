@@ -8,7 +8,7 @@ import (
 )
 
 func SnakeCase(name string) string {
-	noDash := strings.Replace(name, "-", "_", 1)
+	noDash := strings.Replace(name, "-", "_", -1)
 	r := regexp.MustCompile("([A-Z])")
 	withUnderscore := r.ReplaceAllString(noDash[1:], "_$1")
 	noCap := strings.ToLower(noDash[0:1] + withUnderscore)
@@ -31,7 +31,7 @@ func DromedarCase(name string) string {
 
 func Dasherized(name string) string {
 	snake := SnakeCase(name)
-	return strings.Replace(snake, "_", "-", 1)
+	return strings.Replace(snake, "_", "-", -1)
 }
 
 func capitalize(s string) string {

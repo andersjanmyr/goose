@@ -35,6 +35,7 @@ func generate(templateDir string, mappings map[string]string) {
 				panic(err)
 			}
 			writer := bufio.NewWriter(f)
+			log.Printf("Generating file %v\n", newPath)
 			err = tmpl.Execute(writer, mappings)
 			if err != nil {
 				panic(err)
@@ -48,7 +49,7 @@ func generate(templateDir string, mappings map[string]string) {
 }
 
 func newFilename(templateDir string, filename string, mappings map[string]string) string {
-	newPath := strings.Replace(filename, templateDir, ".", -1)
+	newPath := strings.Replace(filename, templateDir, mappings["NAME"], -1)
 	for k, v := range mappings {
 		newPath = replace(newPath, k, v)
 	}
@@ -60,6 +61,7 @@ func replace(name string, key string, value string) string {
 	tmp = strings.Replace(tmp, key+".da", Dasherized(value), -1)
 	tmp = strings.Replace(tmp, key+".dc", DromedarCase(value), -1)
 	tmp = strings.Replace(tmp, key+".sc", SnakeCase(value), -1)
+	tmp = strings.Replace(tmp, key, value, -1)
 	return tmp
 }
 
@@ -90,6 +92,5 @@ func main() {
 	log.Println("template:", template)
 	log.Println("name:", name)
 	log.Println("templateDir:", templateDir)
-	dir := templateDir + "/" + template
-	generate(dir, map[string]string{"NAME": name})
+	generate(filepath.Join(templateDir, template), map[string]string{"NAME": name})
 }
