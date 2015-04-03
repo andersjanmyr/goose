@@ -1,0 +1,4 @@
+Testing functions
+
+{{dromedar .NAME}} := "myElephant"
+
