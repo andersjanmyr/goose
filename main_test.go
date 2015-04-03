@@ -7,8 +7,7 @@ import (
 
 func TestGenerate(t *testing.T) {
 	os.Mkdir("tmp", 0777)
-	os.Chdir("tmp")
-	generate("../test", "tapir", map[string]string{"NAME": "tapir"})
+	generate("fixtures/test", "tmp/tapir", map[string]string{"NAME": "tapir"})
 	os.Chdir("..")
 	os.RemoveAll("tmp")
 }
