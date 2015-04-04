@@ -1,6 +1,6 @@
 # Goose
 
-![goose.png](goose.png)
+![goose](goose-small.png)
 
 Goose, the dumb file generator. Goose takes a file structure and parses the
 files as Go templates generating a new structure with some variables replaced.
@@ -75,11 +75,11 @@ the filenames (and directory names), in this case they are called `NAME.sc.go`,
 
 ```
 # Example, generate files from the `go` structure above.
-$ goose go tapir
-$ tree tapir
-tapir
-|-- tapir.go
-`-- tapir_test.go
+$ goose go demo
+$ tree demo
+demo
+|-- demo.go
+`-- demo_test.go
 ```
 
 
