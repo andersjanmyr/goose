@@ -1,14 +1,26 @@
 # Goose
 
-A tool for generating file structures, simpler than Thor and Yeoman.
+![goose.png](goose.png)
 
-## Installation
+Goose, the dumb file generator. Goose takes a file structure and parses the
+files as Go templates generating a new structure with some variables replaced.
+It is a tool similar to Thor and Yeoman, but dumber, because dumber is
+simpler.
+
+### Installation
 
 ```
 $ curl https://github.com/andersjanmyr/goose/releases/download/v1.0.0/goose \
   > /usr/local/bin/goose
 $ chmod a+x /usr/local/bin/goose
 ```
+
+## Goose Templates
+
+A collection of Goose templates can be downloaded from from
+[Github](https://github.com/andersjanmyr/goose-templates). Fork the repo or
+download the latest version as a [zip archive](https://github.com/andersjanmyr/goose-templates/archive/master.zip).
+
 
 ## Usage
 
@@ -60,5 +72,14 @@ func {{camelcase .NAME}}() string {
 The same functions that are available inside the templates can also be used in
 the filenames (and directory names), in this case they are called `NAME.sc.go`,
 `NAME.da.go`, `NAME.cc.go`, and `NAME.dc.go`.
+
+```
+# Example, generate files from the `go` structure above.
+$ goose go tapir
+$ tree tapir
+tapir
+|-- tapir.go
+`-- tapir_test.go
+```
 
 
