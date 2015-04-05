@@ -68,14 +68,38 @@ func replace(name string, key string, value string) string {
 	return tmp
 }
 
+type MapValue struct {
+	Data map[string]string
+}
+
+func (self *MapValue) String() string {
+	return fmt.Sprintf("%s", self.Data)
+}
+
+func (self *MapValue) Set(s string) error {
+	self.Data = make(map[string]string)
+	pairs := strings.Split(s, ",")
+	for _, p := range pairs {
+		kv := strings.Split(p, "=")
+		self.Data[strings.ToUpper(kv[0])] = kv[1]
+	}
+	return nil
+}
+
 func main() {
 	var templateDir string
 	var outputDir string
+	var mapValue MapValue
 
 	flag.BoolVar(&verbose, "verbose", false, "Be verbose")
 	flag.StringVar(&templateDir, "templatedir", os.Getenv("HOME")+"/.goose",
 		"Directory where templates are stored")
 	flag.StringVar(&outputDir, "outputdir", "", "Output directory, default NAME")
+	flag.Var(&mapValue, "data", "Extra data (keys will be upcased), format: key1=val1,key2=val2")
+	flag.Usage = func() {
+		fmt.Fprintf(os.Stderr, "Usage: %v [options] <template> <name>\n", "goose")
+		flag.PrintDefaults()
+	}
 	flag.Parse()
 	program := path.Base(os.Args[0])
 	log.SetFlags(0)
@@ -84,9 +108,9 @@ func main() {
 	}
 
 	args := flag.Args()
-	log.Println(args)
 	if len(args) < 2 {
-		fmt.Fprintf(os.Stderr, "Usage: %v [--templatedir <dir>] [--outputdir <dir>] [--verbose] <template> <name>\n", program)
+		fmt.Fprintf(os.Stderr, "Usage: %v [options] <template> <name>\n", program)
+		flag.PrintDefaults()
 		os.Exit(1)
 	}
 	template := args[0]
@@ -95,12 +119,21 @@ func main() {
 		outputDir = name
 	}
 
+	var data map[string]string
+	if mapValue.Data != nil {
+		data = mapValue.Data
+	} else {
+		data = make(map[string]string)
+	}
+	data["NAME"] = name
+
 	log.Println("OPTIONS:")
 	log.Println("verbose:", verbose)
 	log.Println("template:", template)
 	log.Println("name:", name)
 	log.Println("templateDir:", templateDir)
 	log.Println("outputDir:", outputDir)
+	log.Println("data:", data)
 
 	selectedTemplateDir := filepath.Join(templateDir, template)
 	if _, err := os.Stat(selectedTemplateDir); os.IsNotExist(err) {
@@ -108,7 +141,7 @@ func main() {
 		fmt.Fprintln(os.Stderr, "Override the default directory with --templatedir <dir>")
 		os.Exit(1)
 	}
-	err := generate(selectedTemplateDir, outputDir, map[string]string{"NAME": name})
+	err := generate(selectedTemplateDir, outputDir, data)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)

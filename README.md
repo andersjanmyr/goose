@@ -25,25 +25,26 @@ download the latest version as a [zip archive](https://github.com/andersjanmyr/g
 ## Usage
 
 ```
-$ goose --verbose go demo
+$ goose --verbose --data "account=1234" go dingo
 OPTIONS:
 verbose: true
 template: go
-name: demo
+name: dingo
 templateDir: /Users/andersjanmyr/.goose
-outputDir: demo
-
-Creating dir demo
-Generating file demo/demo.go
-Generating file demo/demo_test.go
+outputDir: dingo
+data: {map[NAME:dingo ACCOUNT:1234]}
+Creating dir dingo
+Generating file dingo/dingo.go
+Generating file dingo/dingo_test.go
 ```
 
 ```
 $ goose
-Usage: goose [--templatedir ] [--outputdir ] [--verbose] <template> <name>
---outputdir="": Output directory, default NAME
---templatedir="/Users/andersjanmyr/.goose": Directory where templates are stored
---verbose=false: Be verbose
+Usage: main [options] <template> <name>
+  -data=map[]: Extra data (keys will be upcased), format: key1=val1,key2=val2
+  -outputdir="": Output directory, default NAME
+  -templatedir="/Users/andersjanmyr/.goose": Directory where templates are stored
+  -verbose=false: Be verbose
 ```
 
 ## Template Files

@@ -1,7 +1,9 @@
 package main
 
 import (
+	"fmt"
 	"os"
+	"reflect"
 	"testing"
 )
 
@@ -25,5 +27,16 @@ func TestNewFilenameDc(t *testing.T) {
 	expected := "prefixMyNamesuffix"
 	if actual != expected {
 		t.Errorf("newFilename(): %v, expected %v", actual, expected)
+	}
+}
+
+func TestMapValue(t *testing.T) {
+	var mapValue MapValue
+	mapValue.Set("account=1234,animal=tapir")
+	actual := mapValue.Data
+	fmt.Println(mapValue)
+	expected := map[string]string{"account": "1234", "animal": "tapir"}
+	if !reflect.DeepEqual(actual, expected) {
+		t.Errorf("MapValue(): %v, expected %v", actual, expected)
 	}
 }
