@@ -3,7 +3,7 @@
 ![goose](goose-small.png)
 
 Goose, the dumb file generator. Goose takes a file structure and parses the
-files as Go templates generating a new structure with some variables replaced.
+files as Go templates, generating a new structure with some variables replaced.
 It is a tool similar to Thor and Yeoman, but dumber, because dumber is
 simpler.
 
