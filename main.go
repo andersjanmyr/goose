@@ -16,10 +16,11 @@ import (
 var verbose bool
 
 var funcMap = map[string]interface{}{
-	"snakecase":    SnakeCase,
-	"camelcase":    CamelCase,
-	"dromedarcase": DromedarCase,
-	"dasherized":   Dasherized,
+	"snakecase":      SnakeCase,
+	"camelcase":      CamelCase,
+	"dromedarcase":   DromedarCase,
+	"dasherized":     Dasherized,
+	"spaceseparated": SpaceSeparated,
 }
 
 func generate(templateDir string, outputDir string, mappings map[string]string) error {
@@ -64,6 +65,7 @@ func replace(name string, key string, value string) string {
 	tmp = strings.Replace(tmp, key+".da", Dasherized(value), -1)
 	tmp = strings.Replace(tmp, key+".dc", DromedarCase(value), -1)
 	tmp = strings.Replace(tmp, key+".sc", SnakeCase(value), -1)
+	tmp = strings.Replace(tmp, key+".ss", SpaceSeparated(value), -1)
 	tmp = strings.Replace(tmp, key, value, -1)
 	return tmp
 }

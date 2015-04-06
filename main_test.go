@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"os"
 	"reflect"
 	"testing"
@@ -34,9 +33,48 @@ func TestMapValue(t *testing.T) {
 	var mapValue MapValue
 	mapValue.Set("account=1234,animal=tapir")
 	actual := mapValue.Data
-	fmt.Println(mapValue)
-	expected := map[string]string{"account": "1234", "animal": "tapir"}
+	expected := map[string]string{"ACCOUNT": "1234", "ANIMAL": "tapir"}
 	if !reflect.DeepEqual(actual, expected) {
 		t.Errorf("MapValue(): %v, expected %v", actual, expected)
+	}
+}
+
+func TestReplaceCc(t *testing.T) {
+	actual := replace("NAME.cc", "NAME", "groovy_dingo")
+	expected := "GroovyDingo"
+	if actual != expected {
+		t.Errorf("Replace(): %v, expected %v", actual, expected)
+	}
+}
+
+func TestReplaceDa(t *testing.T) {
+	actual := replace("NAME.da", "NAME", "groovy_dingo")
+	expected := "groovy-dingo"
+	if actual != expected {
+		t.Errorf("Replace(): %v, expected %v", actual, expected)
+	}
+}
+
+func TestReplaceDc(t *testing.T) {
+	actual := replace("NAME.dc", "NAME", "groovy_dingo")
+	expected := "groovyDingo"
+	if actual != expected {
+		t.Errorf("Replace(): %v, expected %v", actual, expected)
+	}
+}
+
+func TestReplaceSc(t *testing.T) {
+	actual := replace("NAME.sc", "NAME", "groovyDingo")
+	expected := "groovy_dingo"
+	if actual != expected {
+		t.Errorf("Replace(): %v, expected %v", actual, expected)
+	}
+}
+
+func TestReplaceSs(t *testing.T) {
+	actual := replace("NAME.ss", "NAME", "groovyDingo")
+	expected := "groovy dingo"
+	if actual != expected {
+		t.Errorf("Replace(): %v, expected %v", actual, expected)
 	}
 }

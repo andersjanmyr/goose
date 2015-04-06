@@ -90,6 +90,7 @@ demo
 * `dasherized (da)` - `my-beautiful-tapir`
 * `dromedarcase (dc)` - `myBeautifulTapir`
 * `snakecase (sc)` - `my_beautiful_tapir`
+* `spaceseparated (ss)` - `my beautiful tapir`
 
 
 ## Release Notes
