@@ -90,11 +90,25 @@ func (self *MapValue) Set(s string) error {
 	return nil
 }
 
+func templateHelpText() string {
+	return `
+Available functions in templates are (filename functions in parens):
+	camelcase (cc)      - MyBeautifulTapir
+	dasherized (da)     - my-beautiful-tapir
+	dromedarcase (dc)   - myBeautifulTapir
+	snakecase (sc)      - my_beautiful_tapir
+	spaceseparated (ss) - my beautiful tapir
+	titlecase (tc)      - My Beautiful Tapir
+	`
+}
+
 func main() {
 	var templateDir string
 	var outputDir string
 	var mapValue MapValue
+	var help bool
 
+	flag.BoolVar(&help, "help", false, "Show help text")
 	flag.BoolVar(&verbose, "verbose", false, "Be verbose")
 	flag.StringVar(&templateDir, "templatedir", os.Getenv("HOME")+"/.goose",
 		"Directory where templates are stored")
@@ -103,6 +117,7 @@ func main() {
 	flag.Usage = func() {
 		fmt.Fprintf(os.Stderr, "Usage: %v [options] <template> <name>\n", "goose")
 		flag.PrintDefaults()
+		fmt.Fprintf(os.Stderr, templateHelpText())
 	}
 	flag.Parse()
 	program := path.Base(os.Args[0])
@@ -110,8 +125,13 @@ func main() {
 	if !verbose {
 		log.SetOutput(ioutil.Discard)
 	}
-
 	args := flag.Args()
+
+	if help {
+		flag.Usage()
+		os.Exit(0)
+	}
+
 	if len(args) < 2 {
 		fmt.Fprintf(os.Stderr, "Usage: %v [options] <template> <name>\n", program)
 		flag.PrintDefaults()
