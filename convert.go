@@ -17,13 +17,17 @@ func SnakeCase(name string) string {
 }
 
 func CamelCase(name string) string {
+	return capitalized(name, "")
+}
+
+func capitalized(name string, separator string) string {
 	snake := SnakeCase(name)
 	names := strings.Split(snake, "_")
 	var capNames = make([]string, len(names))
 	for i, name := range names {
 		capNames[i] = capitalize(name)
 	}
-	return strings.Join(capNames, "")
+	return strings.Join(capNames, separator)
 }
 
 func DromedarCase(name string) string {
@@ -38,6 +42,10 @@ func Dasherized(name string) string {
 func SpaceSeparated(name string) string {
 	snake := SnakeCase(name)
 	return strings.Replace(snake, "_", " ", -1)
+}
+
+func TitleCase(name string) string {
+	return capitalized(name, " ")
 }
 
 func capitalize(s string) string {

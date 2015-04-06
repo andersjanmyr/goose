@@ -36,6 +36,14 @@ func TestSnakeCaseSpaceSeparated(t *testing.T) {
 	}
 }
 
+func TestSnakeCaseTitleCase(t *testing.T) {
+	actual := SnakeCase("Brave tapir")
+	expected := "brave_tapir"
+	if actual != expected {
+		t.Errorf("SnakeCase(): %v, expected %v", actual, expected)
+	}
+}
+
 func TestCamelCase(t *testing.T) {
 	actual := CamelCase("brave_tapir")
 	expected := "BraveTapir"
@@ -63,6 +71,14 @@ func TestDasherized(t *testing.T) {
 func TestSpaceSeparated(t *testing.T) {
 	actual := SpaceSeparated("brave_tapir")
 	expected := "brave tapir"
+	if actual != expected {
+		t.Errorf("SpaceSeparated(): %v, expected %v", actual, expected)
+	}
+}
+
+func TestTitleCase(t *testing.T) {
+	actual := TitleCase("brave_tapir")
+	expected := "Brave Tapir"
 	if actual != expected {
 		t.Errorf("SpaceSeparated(): %v, expected %v", actual, expected)
 	}

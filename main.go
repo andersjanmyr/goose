@@ -21,6 +21,7 @@ var funcMap = map[string]interface{}{
 	"dromedarcase":   DromedarCase,
 	"dasherized":     Dasherized,
 	"spaceseparated": SpaceSeparated,
+	"titlecase":      TitleCase,
 }
 
 func generate(templateDir string, outputDir string, mappings map[string]string) error {
@@ -66,6 +67,7 @@ func replace(name string, key string, value string) string {
 	tmp = strings.Replace(tmp, key+".dc", DromedarCase(value), -1)
 	tmp = strings.Replace(tmp, key+".sc", SnakeCase(value), -1)
 	tmp = strings.Replace(tmp, key+".ss", SpaceSeparated(value), -1)
+	tmp = strings.Replace(tmp, key+".tc", TitleCase(value), -1)
 	tmp = strings.Replace(tmp, key, value, -1)
 	return tmp
 }

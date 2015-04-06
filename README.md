@@ -91,6 +91,7 @@ demo
 * `dromedarcase (dc)` - `myBeautifulTapir`
 * `snakecase (sc)` - `my_beautiful_tapir`
 * `spaceseparated (ss)` - `my beautiful tapir`
+* `titlecase (tc)` - `My Beautiful Tapir`
 
 
 ## Release Notes
