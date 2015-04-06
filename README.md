@@ -49,17 +49,9 @@ Usage: main [options] <template> <name>
 
 ## Template Files
 
-The template are normal go template files and support one property `.NAME` and
-four functions `snakecase` (`my_app`), `dasherized` (`my-app`), `camelcase`
-(`MyApp`) and `dromedarcase` (`myApp`).
-
-```
-$ tree .goose
-.goose
-`-- go
-    |-- NAME.dc.go
-    `-- NAME.dc_test.go
-```
+The template files are normal go template files and support one property
+`.NAME` and four functions `snakecase` (`my_app`), `dasherized` (`my-app`),
+`camelcase` (`MyApp`) and `dromedarcase` (`myApp`).
 
 ```go
 // NAME.dc.go
@@ -75,7 +67,16 @@ the filenames (and directory names), in this case they are called `NAME.sc.go`,
 `NAME.da.go`, `NAME.cc.go`, and `NAME.dc.go`.
 
 ```
-# Example, generate files from the `go` structure above.
+# Example, file structure
+$ tree .goose
+.goose
+`-- go
+    |-- NAME.dc.go
+    `-- NAME.dc_test.go
+```
+
+```
+# Example, generated files
 $ goose go demo
 $ tree demo
 demo
@@ -83,4 +84,15 @@ demo
 `-- demo_test.go
 ```
 
+## List of Functions
+
+* `camelcase (cc)` - `MyBeautifulTapir`
+* `dasherized (da)` - `my-beautiful-tapir`
+* `dromedarcase (dc)` - `myBeautifulTapir`
+* `snakecase (sc)` - `my_beautiful_tapir`
+
+
+## Release Notes
+
+A list of changes are in the [RELEASE_NOTES](RELEASE_NOTES.md).
 
