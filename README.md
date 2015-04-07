@@ -72,9 +72,11 @@ Generating file ./dingo_test.go
 
 ```
 $ goose
-Usage: goose [options] <template> <name>
+Usage: main [options] <template> <name>
   -data=map[]: Extra data, format: key1=val1,key2=val2 (keys are upcased)
+  -force=false: Force create files if they exist
   -help=false: Show help text
+  -interactive=false: Ask before creating anything
   -outputdir=".": Output directory
   -templatedir="/Users/andersjanmyr/.goose": Directory where templates are stored
   -verbose=false: Be verbose

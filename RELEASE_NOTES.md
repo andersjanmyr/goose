@@ -4,6 +4,9 @@
 
 * Changed default outputdir to ".", enables the use of suffix functions in the
   top level name.
+* Don't overwrite existing files.
+* Added --interactive option.
+* Added --force option.
 
 
 ## Release 1.1.0
