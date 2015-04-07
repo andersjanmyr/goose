@@ -1,5 +1,11 @@
 # Goose, Release Notes
 
+## Release 1.2.0
+
+* Changed default outputdir to ".", enables the use of suffix functions in the
+  top level name.
+
+
 ## Release 1.1.0
 
 * Added Bash completion.

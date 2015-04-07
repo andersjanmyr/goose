@@ -63,20 +63,29 @@ verbose: true
 template: go
 name: dingo
 templateDir: /Users/andersjanmyr/.goose
-outputDir: dingo
+outputDir: .
 data: {map[NAME:dingo ACCOUNT:1234]}
-Creating dir dingo
-Generating file dingo/dingo.go
-Generating file dingo/dingo_test.go
+Creating dir .
+Generating file ./dingo.go
+Generating file ./dingo_test.go
 ```
 
 ```
 $ goose
-Usage: main [options] <template> <name>
-  -data=map[]: Extra data (keys will be upcased), format: key1=val1,key2=val2
-  -outputdir="": Output directory, default NAME
+Usage: goose [options] <template> <name>
+  -data=map[]: Extra data, format: key1=val1,key2=val2 (keys are upcased)
+  -help=false: Show help text
+  -outputdir=".": Output directory
   -templatedir="/Users/andersjanmyr/.goose": Directory where templates are stored
   -verbose=false: Be verbose
+
+Available functions in templates are (filename suffixes in parenthesis):
+	camelcase (.cc)      - MyBeautifulTapir
+	dasherized (.da)     - my-beautiful-tapir
+	dromedarcase (.dc)   - myBeautifulTapir
+	snakecase (.sc)      - my_beautiful_tapir
+	spaceseparated (.ss) - my beautiful tapir
+	titlecase (.tc)      - My Beautiful Tapir
 ```
 
 ## Template Files

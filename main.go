@@ -112,7 +112,7 @@ func main() {
 	flag.BoolVar(&verbose, "verbose", false, "Be verbose")
 	flag.StringVar(&templateDir, "templatedir", os.Getenv("HOME")+"/.goose",
 		"Directory where templates are stored")
-	flag.StringVar(&outputDir, "outputdir", "", "Output directory, default NAME")
+	flag.StringVar(&outputDir, "outputdir", ".", "Output directory")
 	flag.Var(&mapValue, "data", "Extra data, format: key1=val1,key2=val2 (keys are upcased)")
 	flag.Usage = func() {
 		fmt.Fprintf(os.Stderr, "Usage: %v [options] <template> <name>\n", "goose")
@@ -139,9 +139,6 @@ func main() {
 	}
 	template := args[0]
 	name := args[1]
-	if outputDir == "" {
-		outputDir = name
-	}
 
 	var data map[string]string
 	if mapValue.Data != nil {
