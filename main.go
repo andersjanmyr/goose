@@ -13,7 +13,7 @@ import (
 	"text/template"
 )
 
-var verbose bool
+var verbose, interactive, force bool
 
 var funcMap = map[string]interface{}{
 	"snakecase":      SnakeCase,
@@ -24,13 +24,32 @@ var funcMap = map[string]interface{}{
 	"titlecase":      TitleCase,
 }
 
+func fileExists(filename string) bool {
+	if _, err := os.Stat(filename); os.IsNotExist(err) {
+		return false
+	}
+	return true
+}
+
 func generate(templateDir string, outputDir string, mappings map[string]string) error {
 	copyFile := func(filename string, info os.FileInfo, err error) error {
 		newPath := newFilename(templateDir, outputDir, filename, mappings)
-		if info.IsDir() {
-			log.Printf("Creating dir %v\n", newPath)
-			os.MkdirAll(newPath, 0700)
-		} else {
+		if !info.IsDir() {
+			if !force {
+				if interactive && !fileExists(newPath) {
+					if !prompt("Create " + newPath) {
+						return nil
+					}
+				} else if fileExists(newPath) {
+					if !prompt(newPath + " exists. Overwrite") {
+						return nil
+					}
+				}
+			}
+			var dir = path.Dir(newPath)
+			if !fileExists(dir) {
+				os.MkdirAll(dir, 0700)
+			}
 			tmpl, err := template.New(path.Base(filename)).Funcs(funcMap).ParseFiles(filename)
 			if err != nil {
 				return fmt.Errorf("Cannot parse file %s, %s", filename, err)
@@ -72,6 +91,23 @@ func replace(name string, key string, value string) string {
 	return tmp
 }
 
+func prompt(query string) bool {
+	var reply string
+	for {
+		fmt.Printf("%s? (Y/N) ", query)
+		reader := bufio.NewReader(os.Stdin)
+		text, _ := reader.ReadString('\n')
+		reply = strings.ToUpper(strings.TrimSpace(text))
+		if reply == "Y" || reply == "N" {
+			break
+		} else {
+			fmt.Println("Invalid reply", reply)
+		}
+
+	}
+	return reply == "Y"
+}
+
 type MapValue struct {
 	Data map[string]string
 }
@@ -110,6 +146,8 @@ func main() {
 
 	flag.BoolVar(&help, "help", false, "Show help text")
 	flag.BoolVar(&verbose, "verbose", false, "Be verbose")
+	flag.BoolVar(&force, "force", false, "Force create files if they exist")
+	flag.BoolVar(&interactive, "interactive", false, "Ask before creating anything")
 	flag.StringVar(&templateDir, "templatedir", os.Getenv("HOME")+"/.goose",
 		"Directory where templates are stored")
 	flag.StringVar(&outputDir, "outputdir", ".", "Output directory")
@@ -150,11 +188,20 @@ func main() {
 
 	log.Println("OPTIONS:")
 	log.Println("verbose:", verbose)
+	log.Println("force:", force)
+	log.Println("interactive:", interactive)
 	log.Println("template:", template)
 	log.Println("name:", name)
 	log.Println("templateDir:", templateDir)
 	log.Println("outputDir:", outputDir)
 	log.Println("data:", data)
+
+	if interactive && force {
+		fmt.Fprintln(os.Stderr, "Options --interactive and --force are mutually exclusive.")
+		fmt.Fprintf(os.Stderr, "Usage: %v [options] <template> <name>\n", program)
+		flag.PrintDefaults()
+		os.Exit(1)
+	}
 
 	selectedTemplateDir := filepath.Join(templateDir, template)
 	if _, err := os.Stat(selectedTemplateDir); os.IsNotExist(err) {
