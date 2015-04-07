@@ -20,7 +20,7 @@ dumber, because dumber is simpler.
 * [OS X](https://github.com/andersjanmyr/goose/releases/download/v1.2.0/goose-osx)
 * [Linux](https://github.com/andersjanmyr/goose/releases/download/v1.2.0/goose-linux)
 * [Windows](https://github.com/andersjanmyr/goose/releases/download/v1.2.0/goose.exe)
-* [Bash completion](https://raw.githubusercontent.com/andersjanmyr/goose/v1.2.0/goose_completion.sh)
+* [Bash completion](https://raw.githubusercontent.com/andersjanmyr/goose/master/goose_completion.sh)
 
 ### Curl
 
@@ -37,7 +37,7 @@ $ curl https://github.com/andersjanmyr/goose/releases/download/v1.2.0/goose-linu
 $ chmod a+x /usr/local/bin/goose
 
 # Bash Completion
-$ curl https://raw.githubusercontent.com/andersjanmyr/goose/v1.2.0/goose_completion.sh
+$ curl https://raw.githubusercontent.com/andersjanmyr/goose/master/goose_completion.sh
   > /your/bash_completion/dir/
 ```
 
