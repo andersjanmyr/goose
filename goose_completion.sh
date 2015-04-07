@@ -3,7 +3,7 @@ _goose() {
   COMPREPLY=()
   cur="${COMP_WORDS[COMP_CWORD]}"
   prev="${COMP_WORDS[COMP_CWORD-1]}"
-  opts="--data --help --outputdir --templatedir --verbose"
+  opts="--data --force --help --interactive --outputdir --templatedir --verbose"
 
   if [[ ${cur} == -* ]] ; then
     COMPREPLY=( $(compgen -W "${opts}" -- ${cur}) )
