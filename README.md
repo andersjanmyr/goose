@@ -1,26 +1,58 @@
-# Goose
+# Goose, the dumb file generator
 
 ![goose](goose-small.png)
 
-Goose, the dumb file generator. Goose takes a file structure and parses the
-files as Go templates, generating a new structure with some variables replaced.
-It is a tool similar to Thor and Yeoman, but dumber, because dumber is
-simpler.
+Goose, the dumb file generator. Goose takes a file structure and replaces names
+with values. The values can be converted into several formats, `snakecase`,
+`camelcase`, `dromedarcase`, `dasherized`, `spaceseparated` and `titlecase`.
+
+The file structure is created exactly as the template file structure with the
+keys replaced with the values. It is a tool similar to Thor and Yeoman, but
+dumber, because dumber is simpler.
 
 ### Installation
 
+`goose` is a single binary. Install it by right-clicking and `Save as...` or with
+`curl`.
+
+### Links
+
+* [OS X](https://github.com/andersjanmyr/goose/releases/download/v1.1.0/goose-osx)
+* [Linux](https://github.com/andersjanmyr/goose/releases/download/v1.1.0/goose-linux)
+* [Windows](https://github.com/andersjanmyr/goose/releases/download/v1.1.0/goose.exe)
+* [Bash completion](https://raw.githubusercontent.com/andersjanmyr/goose/v1.1.0/goose_completion.sh)
+
+### Curl
+
 ```
-$ curl https://github.com/andersjanmyr/goose/releases/download/v1.0.0/goose \
+# OS X
+$ curl https://github.com/andersjanmyr/goose/releases/download/v1.1.0/goose-osx \
   > /usr/local/bin/goose
+
+# Linux
+$ curl https://github.com/andersjanmyr/goose/releases/download/v1.1.0/goose-linux \
+  > /usr/local/bin/goose
+
+# Make executable
 $ chmod a+x /usr/local/bin/goose
+
+# Bash Completion
+$ curl https://raw.githubusercontent.com/andersjanmyr/goose/v1.1.0/goose_completion.sh
+  > /your/bash_completion/dir/
 ```
 
 ## Goose Templates
 
-A collection of Goose templates can be downloaded from from
-[Github](https://github.com/andersjanmyr/goose-templates). Fork the repo or
-download the latest version as a [zip archive](https://github.com/andersjanmyr/goose-templates/archive/master.zip).
+A collection of Goose templates can be found in a separate repository,
+[goose-templates](https://github.com/andersjanmyr/goose-templates). Fork it and
+clone it or download the latest version as a
+[zip archive](https://github.com/andersjanmyr/goose-templates/archive/master.zip).
 
+It is recommended to install the templates into `~/.goose`
+
+```
+$ git clone git@github.com:andersjanmyr/goose-templates.git ~/.goose
+```
 
 ## Usage
 
@@ -50,8 +82,9 @@ Usage: main [options] <template> <name>
 ## Template Files
 
 The template files are normal go template files and support one property
-`.NAME` and four functions `snakecase` (`my_app`), `dasherized` (`my-app`),
-`camelcase` (`MyApp`) and `dromedarcase` (`myApp`).
+`.NAME` and functions `snakecase` (`my_app`), `dasherized` (`my-app`),
+`camelcase` (`MyApp`), `dromedarcase` (`myApp`), `spaceseparated` (`my app`),
+`title case` (`My App`) .
 
 ```go
 // NAME.dc.go
@@ -64,7 +97,7 @@ func {{camelcase .NAME}}() string {
 
 The same functions that are available inside the templates can also be used in
 the filenames (and directory names), in this case they are called `NAME.sc.go`,
-`NAME.da.go`, `NAME.cc.go`, and `NAME.dc.go`.
+`NAME.da.go`, `NAME.cc.go`, `NAME.dc.go`, `NAME.ss.go`, and `NAME.tc.go`.
 
 ```
 # Example, file structure

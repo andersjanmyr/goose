@@ -92,13 +92,13 @@ func (self *MapValue) Set(s string) error {
 
 func templateHelpText() string {
 	return `
-Available functions in templates are (filename functions in parens):
-	camelcase (cc)      - MyBeautifulTapir
-	dasherized (da)     - my-beautiful-tapir
-	dromedarcase (dc)   - myBeautifulTapir
-	snakecase (sc)      - my_beautiful_tapir
-	spaceseparated (ss) - my beautiful tapir
-	titlecase (tc)      - My Beautiful Tapir
+Available functions in templates are (filename suffixes in parenthesis):
+	camelcase (.cc)      - MyBeautifulTapir
+	dasherized (.da)     - my-beautiful-tapir
+	dromedarcase (.dc)   - myBeautifulTapir
+	snakecase (.sc)      - my_beautiful_tapir
+	spaceseparated (.ss) - my beautiful tapir
+	titlecase (.tc)      - My Beautiful Tapir
 	`
 }
 
@@ -113,7 +113,7 @@ func main() {
 	flag.StringVar(&templateDir, "templatedir", os.Getenv("HOME")+"/.goose",
 		"Directory where templates are stored")
 	flag.StringVar(&outputDir, "outputdir", "", "Output directory, default NAME")
-	flag.Var(&mapValue, "data", "Extra data (keys will be upcased), format: key1=val1,key2=val2")
+	flag.Var(&mapValue, "data", "Extra data, format: key1=val1,key2=val2 (keys are upcased)")
 	flag.Usage = func() {
 		fmt.Fprintf(os.Stderr, "Usage: %v [options] <template> <name>\n", "goose")
 		flag.PrintDefaults()
