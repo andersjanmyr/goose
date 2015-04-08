@@ -111,21 +111,55 @@ the filenames (and directory names), in this case they are called `NAME.sc.go`,
 `NAME.da.go`, `NAME.cc.go`, `NAME.dc.go`, `NAME.ss.go`, and `NAME.tc.go`.
 
 ```
-# Example, file structure
-$ tree .goose
-.goose
-`-- go
-    |-- NAME.dc.go
-    `-- NAME.dc_test.go
+# Example, simple structure
+$ tree ~/.goose/go
+go
+├── NAME.dc.go
+└── NAME.dc_test.go
 ```
 
 ```
-# Example, generated files
-$ goose go demo
-$ tree demo
-demo
-|-- demo.go
-`-- demo_test.go
+# Example, generated simple structure
+$ goose go tapir
+$ tree .
+.
+├── tapir.go
+└── tapir_test.go
+
+```
+
+```
+# Example, bigger structure
+$ tree ~/.goose/lambda/
+lambda/
+└── NAME.da
+    ├── add-event-source.sh
+    ├── create-roles.sh
+    ├── generate-events.js
+    ├── iam
+    │   ├── lambda-assumerole-policy.json
+    │   └── s3-assumerole-policy.json
+    ├── invoke-lambda.sh
+    ├── NAME.da.js
+    ├── package.json
+    └── upload-lambda.sh
+```
+
+```
+# Example, generated bigger structure
+$ goose lambda cool-micro-service
+$ tree cool-micro-service
+cool-micro-service/
+├── add-event-source.sh
+├── cool-micro-service.js
+├── create-roles.sh
+├── generate-events.js
+├── iam
+│   ├── lambda-assumerole-policy.json
+│   └── s3-assumerole-policy.json
+├── invoke-lambda.sh
+├── package.json
+└── upload-lambda.sh
 ```
 
 ## List of Functions
