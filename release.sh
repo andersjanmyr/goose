@@ -24,4 +24,5 @@ git add README.md
 git commit -am "Changed version to $1"
 git tag $new_version -am "Release $new_version"
 
+rm README.md.bak
 
