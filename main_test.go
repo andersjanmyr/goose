@@ -8,7 +8,11 @@ import (
 
 func TestGenerate(t *testing.T) {
 	os.Mkdir("tmp", 0777)
-	generate("fixtures/test", "tmp/tapir", map[string]string{"NAME": "tapir"})
+	force = true
+	err := generate("fixtures/test", "tmp/tapir", map[string]string{"NAME": "tapir"})
+	if err != nil {
+		t.Errorf("Failed while parsing", err)
+	}
 	os.RemoveAll("tmp")
 }
 

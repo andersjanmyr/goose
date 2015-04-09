@@ -1,5 +1,9 @@
 # Goose, Release Notes
 
+## Release 1.3.0
+
+* Support for copying binary files such as images
+
 ## Release 1.2.0
 
 * Changed default outputdir to ".", enables the use of suffix functions in the

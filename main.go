@@ -50,22 +50,14 @@ func generate(templateDir string, outputDir string, mappings map[string]string) 
 			if !fileExists(dir) {
 				os.MkdirAll(dir, 0700)
 			}
-			tmpl, err := template.New(path.Base(filename)).Funcs(funcMap).ParseFiles(filename)
+			err := generateFile(filename, newPath, mappings)
 			if err != nil {
-				return fmt.Errorf("Cannot parse file %s, %s", filename, err)
+				if !strings.Contains(err.Error(), "unexpected") {
+					return fmt.Errorf("Cannot generate file %s, %s", filename, err)
+				}
+				copyFile(filename, newPath)
 			}
-			f, err := os.Create(newPath)
-			if err != nil {
-				return fmt.Errorf("Cannot create file %s, %s", newPath, err)
-			}
-			writer := bufio.NewWriter(f)
-			log.Printf("Generating file %v\n", newPath)
-			err = tmpl.Execute(writer, mappings)
-			if err != nil {
-				return fmt.Errorf("Cannot generate file %s, %s", newPath, err)
-			}
-			writer.Flush()
-			f.Close()
+
 		}
 		return nil
 	}
@@ -106,6 +98,42 @@ func prompt(query string) bool {
 
 	}
 	return reply == "Y"
+}
+
+func generateFile(filename string, newPath string, mappings map[string]string) error {
+	tmpl, err := template.New(path.Base(filename)).Funcs(funcMap).ParseFiles(filename)
+	if err != nil {
+		return err
+	}
+	f, err := os.Create(newPath)
+	defer f.Close()
+	if err != nil {
+		return err
+	}
+	writer := bufio.NewWriter(f)
+	log.Printf("Generating file %v\n", newPath)
+	err = tmpl.Execute(writer, mappings)
+	if err != nil {
+		return err
+	}
+	writer.Flush()
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func copyFile(filename string, newPath string) error {
+	log.Printf("Copying file %v\n", newPath)
+	data, err := ioutil.ReadFile(filename)
+	if err != nil {
+		return err
+	}
+	err = ioutil.WriteFile(newPath, data, 0644)
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 type MapValue struct {
