@@ -12,6 +12,11 @@ if [ -z "$new_version" ]; then
   exit 1
 fi
 
+if ! grep $new_version ./RELEASE_NOTES.md; then
+  echoerr "RELEASE_NOTES does not contain a section for $new_version"
+  exit 1
+fi
+
 if ! git diff --quiet HEAD; then
   echoerr "Cannot create release with a dirty repo."
   echoerr "Commit or stash changes and try again."
