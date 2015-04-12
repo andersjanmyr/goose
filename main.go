@@ -15,6 +15,8 @@ import (
 
 var verbose, interactive, force bool
 
+const Version = "v1.3.1"
+
 var funcMap = map[string]interface{}{
 	"snakecase":      SnakeCase,
 	"camelcase":      CamelCase,
@@ -171,9 +173,11 @@ func main() {
 	var outputDir string
 	var mapValue MapValue
 	var help bool
+	var version bool
 
 	flag.BoolVar(&help, "help", false, "Show help text")
 	flag.BoolVar(&verbose, "verbose", false, "Be verbose")
+	flag.BoolVar(&version, "version", false, "Show version")
 	flag.BoolVar(&force, "force", false, "Force create files if they exist")
 	flag.BoolVar(&interactive, "interactive", false, "Ask before creating anything")
 	flag.StringVar(&templateDir, "templatedir", os.Getenv("HOME")+"/.goose",
@@ -195,6 +199,10 @@ func main() {
 
 	if help {
 		flag.Usage()
+		os.Exit(0)
+	}
+	if version {
+		fmt.Println(Version)
 		os.Exit(0)
 	}
 
