@@ -243,6 +243,7 @@ func main() {
 	if _, err := os.Stat(selectedTemplateDir); os.IsNotExist(err) {
 		fmt.Fprintf(os.Stderr, "Template directory does not exist: %s\n", selectedTemplateDir)
 		fmt.Fprintln(os.Stderr, "Override the default directory with --templatedir <dir>")
+		fmt.Fprintln(os.Stderr, "Or download example templates from https://github.com/andersjanmyr/goose-templates")
 		os.Exit(1)
 	}
 	err := generate(selectedTemplateDir, outputDir, data)
