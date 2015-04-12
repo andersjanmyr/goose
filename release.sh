@@ -32,3 +32,9 @@ git tag $new_version -am "Release $new_version"
 
 rm README.md.bak version.go.bak
 
+echo "git push --tags"
+echo "Create Release $new_version"
+echo "Copy RELEASE_NOTES to new Release"
+echo "Upload assets"
+echo "Update Homebrew formula"
+
