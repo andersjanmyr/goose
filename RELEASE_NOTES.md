@@ -1,5 +1,11 @@
 # Goose, Release Notes
 
+## Release 1.3.1
+
+* Changed to build static binaries
+* Prepared for distributing with Homewbrew
+
+
 ## Release 1.3.0
 
 * Support for copying binary files such as images
