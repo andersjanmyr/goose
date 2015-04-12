@@ -15,8 +15,6 @@ import (
 
 var verbose, interactive, force bool
 
-const Version = "v1.3.1"
-
 var funcMap = map[string]interface{}{
 	"snakecase":      SnakeCase,
 	"camelcase":      CamelCase,
