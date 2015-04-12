@@ -17,20 +17,20 @@ dumber, because dumber is simpler.
 
 ### Links
 
-* [OS X](https://github.com/andersjanmyr/goose/releases/download/v1.3.0/goose-osx)
-* [Linux](https://github.com/andersjanmyr/goose/releases/download/v1.3.0/goose-linux)
-* [Windows](https://github.com/andersjanmyr/goose/releases/download/v1.3.0/goose.exe)
-* [Bash completion](https://raw.githubusercontent.com/andersjanmyr/goose/master/goose_completion.sh)
+* [OS X](https://github.com/andersjanmyr/goose/releases/download/v1.3.1/goose-osx)
+* [Linux](https://github.com/andersjanmyr/goose/releases/download/v1.3.1/goose-linux)
+* [Windows](https://github.com/andersjanmyr/goose/releases/download/v1.3.1/goose.exe)
+* [Bash completion](https://raw.githubusercontent.com/andersjanmyr/goose/v1.3.1/goose_completion.sh)
 
 ### Curl
 
 ```
 # OS X
-$ curl https://github.com/andersjanmyr/goose/releases/download/v1.3.0/goose-osx \
+$ curl https://github.com/andersjanmyr/goose/releases/download/v1.3.1/goose-osx \
   > /usr/local/bin/goose
 
 # Linux
-$ curl https://github.com/andersjanmyr/goose/releases/download/v1.3.0/goose-linux \
+$ curl https://github.com/andersjanmyr/goose/releases/download/v1.3.1/goose-linux \
   > /usr/local/bin/goose
 
 # Make executable
