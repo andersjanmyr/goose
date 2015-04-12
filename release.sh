@@ -20,9 +20,10 @@ if ! git diff --quiet HEAD; then
 fi
 
 sed -i.bak -E "s/v[0-9]\.[0-9]\.[0-9]/$new_version/g" README.md
+sed -i.bak -E "s/v[0-9]\.[0-9]\.[0-9]/$new_version/g" version.go
 git add README.md
 git commit -am "Changed version to $1"
 git tag $new_version -am "Release $new_version"
 
-rm README.md.bak
+rm README.md.bak version.go.bak
 
