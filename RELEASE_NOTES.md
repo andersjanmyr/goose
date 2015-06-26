@@ -1,5 +1,9 @@
 # Goose, Release Notes
 
+## Release v1.3.3
+
+* Automatic release script
+
 ## Release v1.3.2
 
 * Added `--version` option.
