@@ -26,18 +26,18 @@ dumber, because dumber is simpler.
 
 ```
 # OS X
-$ curl https://github.com/andersjanmyr/goose/releases/download/v1.3.2/goose-osx \
+$ curl -L https://github.com/andersjanmyr/goose/releases/download/v1.3.2/goose-osx \
   > /usr/local/bin/goose
 
 # Linux
-$ curl https://github.com/andersjanmyr/goose/releases/download/v1.3.2/goose-linux \
+$ curl -L https://github.com/andersjanmyr/goose/releases/download/v1.3.2/goose-linux \
   > /usr/local/bin/goose
 
 # Make executable
 $ chmod a+x /usr/local/bin/goose
 
 # Bash Completion
-$ curl https://raw.githubusercontent.com/andersjanmyr/goose/master/goose_completion.sh
+$ curl -L https://raw.githubusercontent.com/andersjanmyr/goose/master/goose_completion.sh \
   > /your/bash_completion/dir/
 ```
 
