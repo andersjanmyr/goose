@@ -1,5 +1,10 @@
 # Goose, Release Notes
 
+## Release v1.3.4
+
+* Accept `git clone`able URL as template name.
+* Added `identifier` function and corresponding `.id` filename suffix.
+
 ## Release v1.3.3
 
 * Automatic release script

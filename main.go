@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
+	"net/url"
 	"os"
 	"path"
 	"path/filepath"
@@ -16,12 +17,13 @@ import (
 var verbose, interactive, force bool
 
 var funcMap = map[string]interface{}{
-	"snakecase":      SnakeCase,
-	"camelcase":      CamelCase,
-	"dromedarcase":   DromedarCase,
-	"dasherized":     Dasherized,
-	"spaceseparated": SpaceSeparated,
-	"titlecase":      TitleCase,
+	"snakecase":        SnakeCase,
+	"camelcase":        CamelCase,
+	"dromedarcase":     DromedarCase,
+	"dasherized":       Dasherized,
+	"spaceseparated":   SpaceSeparated,
+	"titlecase":        TitleCase,
+	"lowercaseletters": LowercaseLetters,
 }
 
 func fileExists(filename string) bool {
@@ -79,6 +81,7 @@ func replace(name string, key string, value string) string {
 	tmp = strings.Replace(tmp, key+".sc", SnakeCase(value), -1)
 	tmp = strings.Replace(tmp, key+".ss", SpaceSeparated(value), -1)
 	tmp = strings.Replace(tmp, key+".tc", TitleCase(value), -1)
+	tmp = strings.Replace(tmp, key+".ll", LowercaseLetters(value), -1)
 	tmp = strings.Replace(tmp, key, value, -1)
 	return tmp
 }
@@ -157,12 +160,13 @@ func (self *MapValue) Set(s string) error {
 func templateHelpText() string {
 	return `
 Available functions in templates are (filename suffixes in parenthesis):
-	camelcase (.cc)      - MyBeautifulTapir
-	dasherized (.da)     - my-beautiful-tapir
-	dromedarcase (.dc)   - myBeautifulTapir
-	snakecase (.sc)      - my_beautiful_tapir
-	spaceseparated (.ss) - my beautiful tapir
-	titlecase (.tc)      - My Beautiful Tapir
+	camelcase (.cc)					- MyBeautifulTapir
+	dasherized (.da)				- my-beautiful-tapir
+	dromedarcase (.dc)      - myBeautifulTapir
+	snakecase (.sc)         - my_beautiful_tapir
+	spaceseparated (.ss)    - my beautiful tapir
+	titlecase (.tc)         - My Beautiful Tapir
+	lowercaseletters (.ll)  - mybeautifultapir
 	`
 }
 
@@ -237,13 +241,29 @@ func main() {
 		os.Exit(1)
 	}
 
-	selectedTemplateDir := filepath.Join(templateDir, template)
-	if _, err := os.Stat(selectedTemplateDir); os.IsNotExist(err) {
-		fmt.Fprintf(os.Stderr, "Template directory does not exist: %s\n", selectedTemplateDir)
-		fmt.Fprintln(os.Stderr, "Override the default directory with --templatedir <dir>")
-		fmt.Fprintln(os.Stderr, "Or download example templates from https://github.com/andersjanmyr/goose-templates")
-		os.Exit(1)
+	var selectedTemplateDir string
+
+	if _, err := url.Parse(template); err == nil {
+		if dir, err := gitClone(template); err != nil {
+			fmt.Fprintln(os.Stderr, "Template URL", dir, "could not be git cloned:", err)
+			os.Exit(1)
+		} else {
+			if err := os.RemoveAll(path.Join(dir, ".git")); err != nil {
+				fmt.Fprintln(os.Stderr, "Could not remove .git from cloned directory: ", err)
+				os.Exit(1)
+			}
+			selectedTemplateDir = dir
+		}
+	} else {
+		selectedTemplateDir = filepath.Join(templateDir, template)
+		if _, err := os.Stat(selectedTemplateDir); os.IsNotExist(err) {
+			fmt.Fprintf(os.Stderr, "Template directory does not exist: %s\n", selectedTemplateDir)
+			fmt.Fprintln(os.Stderr, "Override the default directory with --templatedir <dir>")
+			fmt.Fprintln(os.Stderr, "Or download example templates from https://github.com/andersjanmyr/goose-templates")
+			os.Exit(1)
+		}
 	}
+
 	err := generate(selectedTemplateDir, outputDir, data)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)

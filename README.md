@@ -82,20 +82,26 @@ Usage: main [options] <template> <name>
   -verbose=false: Be verbose
 
 Available functions in templates are (filename suffixes in parenthesis):
-	camelcase (.cc)      - MyBeautifulTapir
-	dasherized (.da)     - my-beautiful-tapir
-	dromedarcase (.dc)   - myBeautifulTapir
-	snakecase (.sc)      - my_beautiful_tapir
-	spaceseparated (.ss) - my beautiful tapir
-	titlecase (.tc)      - My Beautiful Tapir
+	camelcase (.cc)         - MyBeautifulTapir
+	dasherized (.da)        - my-beautiful-tapir
+	dromedarcase (.dc)      - myBeautifulTapir
+	snakecase (.sc)         - my_beautiful_tapir
+	spaceseparated (.ss)    - my beautiful tapir
+	titlecase (.tc)         - My Beautiful Tapir
+	lowercaseletters (.ll)  - mybeautifultapir
 ```
+
+### Template Name
+
+If `<template>` is a `git clone`able URL it is cloned and used as the template,
+effectively ignoring the `-templatedir` parameter.
 
 ## Template Files
 
 The template files are normal go template files and support one property
 `.NAME` and functions `snakecase` (`my_app`), `dasherized` (`my-app`),
 `camelcase` (`MyApp`), `dromedarcase` (`myApp`), `spaceseparated` (`my app`),
-`title case` (`My App`) .
+`title case` (`My App`), `lowercaseletters` (`myapp`).
 
 ```go
 // NAME.dc.go
@@ -170,6 +176,7 @@ cool-micro-service/
 * `snakecase (sc)` - `my_beautiful_tapir`
 * `spaceseparated (ss)` - `my beautiful tapir`
 * `titlecase (tc)` - `My Beautiful Tapir`
+* `lowercaseletters (ll)` - `mybeautifultapir`
 
 
 ## Release Notes

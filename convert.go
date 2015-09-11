@@ -57,3 +57,17 @@ func decapitalize(s string) string {
 	r, n := utf8.DecodeRuneInString(s)
 	return string(unicode.ToLower(r)) + s[n:]
 }
+
+var nonLettersRegex *regexp.Regexp
+
+func LowercaseLetters(s string) string {
+	return strings.ToLower(nonLettersRegex.ReplaceAllString(s, ""))
+}
+
+func init() {
+	var err error
+	nonLettersRegex, err = regexp.Compile("[^a-zA-Z]")
+	if err != nil {
+		panic(err)
+	}
+}

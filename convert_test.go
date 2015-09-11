@@ -83,3 +83,11 @@ func TestTitleCase(t *testing.T) {
 		t.Errorf("SpaceSeparated(): %v, expected %v", actual, expected)
 	}
 }
+
+func TestLowercaseLetters(t *testing.T) {
+	actual := Identifier("123 tapirs WILL rule ___EARTH!")
+	expected := "tapirswillruleearth"
+	if actual != expected {
+		t.Errorf("LowercaseLetters(): %v, expected %v", actual, expected)
+	}
+}
