@@ -17,7 +17,7 @@ for d in ~/.goose/*/ ; do
   echo_readme "## $name"
   echo_readme ''
   echo_readme '```'
-  redwood $d >> ~/.goose/README.md
+  tree $d >> ~/.goose/README.md
   echo_readme '```'
 done
 
