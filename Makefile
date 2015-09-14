@@ -13,7 +13,7 @@ dist/goose-linux: $(sources)
 build: dist/goose.exe dist/goose-osx dist/goose-linux
 
 release: build
-	release.sh goose $(VERSION) dist/*
+	./release.sh goose $(VERSION) dist/*
 
 clean :
 	-rm -r dist
