@@ -10,7 +10,16 @@ The file structure is created exactly as the template file structure with the
 keys replaced with the values. It is a tool similar to Thor and Yeoman, but
 dumber, because dumber is simpler.
 
-### Installation
+## Installation
+
+### Homebrew Installation on OS X
+
+```
+$ brew tap andersjanmyr/tap
+$ brew install route53
+```
+
+### Installation without Homebrew
 
 `goose` is a single binary. Install it by right-clicking and `Save as...` or with
 `curl`.
