@@ -9,10 +9,13 @@ dist/goose-osx: $(sources)
 dist/goose-linux: $(sources)
 	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -installsuffix cgo -ldflags '-s' -o dist/goose-linux
 
-.PHONY: build release clean
+.PHONY: build tag release clean
 build: dist/goose.exe dist/goose-osx dist/goose-linux
 
-release: build
+tag:
+	./tag.sh $(VERSION)
+
+release: tag build
 	./release.sh goose $(VERSION) dist/*
 
 clean :
