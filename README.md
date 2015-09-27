@@ -16,7 +16,7 @@ dumber, because dumber is simpler.
 
 ```
 $ brew tap andersjanmyr/tap
-$ brew install route53
+$ brew install goose
 ```
 
 ### Installation without Homebrew
