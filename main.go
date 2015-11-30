@@ -243,7 +243,7 @@ func main() {
 
 	var selectedTemplateDir string
 
-	if _, err := url.Parse(template); err == nil {
+	if url, err := url.Parse(template); err == nil && url.Scheme != "" {
 		if dir, err := gitClone(template); err != nil {
 			fmt.Fprintln(os.Stderr, "Template URL", dir, "could not be git cloned:", err)
 			os.Exit(1)
