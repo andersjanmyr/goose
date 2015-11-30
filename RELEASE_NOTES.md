@@ -1,5 +1,9 @@
 # Goose, Release Notes
 
+## Release v1.3.5
+
+* Bug, everything was treated as a git url
+
 ## Release v1.3.4
 
 * Accept `git clone`able URL as template name.
