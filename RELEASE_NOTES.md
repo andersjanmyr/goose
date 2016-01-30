@@ -1,5 +1,10 @@
 # Goose, Release Notes
 
+## Release v1.4.0
+
+* Added boacase (.bc) for upper case SNAKE_CASE.
+* `--data` will also make key:values available as a DATA map.
+
 ## Release v1.3.5
 
 * Bug, everything was treated as a git url
