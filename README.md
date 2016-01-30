@@ -66,18 +66,24 @@ $ git clone git@github.com:andersjanmyr/goose-templates.git ~/.goose
 ## Usage
 
 ```
-$ goose --verbose --data "account=1234" go dingo
+$ goose --verbose --data 'name=string,title=date' seq-model articles
 OPTIONS:
 verbose: true
-template: go
-name: dingo
+force: false
+interactive: false
+template: seq-model
+name: articles
 templateDir: /Users/andersjanmyr/.goose
 outputDir: .
-data: {map[NAME:dingo ACCOUNT:1234]}
+data: map[NAME:articles TITLE:date DATA:map[title:date name:string]]
 Creating dir .
-Generating file ./dingo.go
-Generating file ./dingo_test.go
+Generating file /db/migrations/articles.js
 ```
+
+As you can see from the data option above, the values given to the `--data`
+option are available to the template as upper cased and as a DATA map with the
+values as they where given.
+
 
 ```
 $ goose
@@ -91,6 +97,7 @@ Usage: main [options] <template> <name>
   -verbose=false: Be verbose
 
 Available functions in templates are (filename suffixes in parenthesis):
+	boacase (.bc)           - MY_BEAUTIFUL_TAPIR
 	camelcase (.cc)         - MyBeautifulTapir
 	dasherized (.da)        - my-beautiful-tapir
 	dromedarcase (.dc)      - myBeautifulTapir
@@ -170,8 +177,8 @@ cool-micro-service/
 ├── create-roles.sh
 ├── generate-events.js
 ├── iam
-│   ├── lambda-assumerole-policy.json
-│   └── s3-assumerole-policy.json
+│   ├── lambda-assumerole-policy.json
+│   └── s3-assumerole-policy.json
 ├── invoke-lambda.sh
 ├── package.json
 └── upload-lambda.sh
@@ -179,6 +186,7 @@ cool-micro-service/
 
 ## List of Functions
 
+* `boacase (bc)` - `MY_BEAUTIFUL_TAPIR`
 * `camelcase (cc)` - `MyBeautifulTapir`
 * `dasherized (da)` - `my-beautiful-tapir`
 * `dromedarcase (dc)` - `myBeautifulTapir`
