@@ -44,6 +44,14 @@ func TestSnakeCaseTitleCase(t *testing.T) {
 	}
 }
 
+func TestBoaCase(t *testing.T) {
+	actual := BoaCase("brave_tapir")
+	expected := "BRAVE_TAPIR"
+	if actual != expected {
+		t.Errorf("BoaCase(): %v, expected %v", actual, expected)
+	}
+}
+
 func TestCamelCase(t *testing.T) {
 	actual := CamelCase("brave_tapir")
 	expected := "BraveTapir"

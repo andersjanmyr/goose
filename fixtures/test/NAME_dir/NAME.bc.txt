@@ -1,0 +1,3 @@
+bc.file
+{{ range $key, $value := .DATA}}{{$key}}: {type: Sequelize.{{$value}} },
+{{ end }}

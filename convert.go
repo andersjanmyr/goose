@@ -16,6 +16,11 @@ func SnakeCase(name string) string {
 	return noCap
 }
 
+func BoaCase(name string) string {
+	snake := SnakeCase(name)
+	return strings.ToUpper(snake)
+}
+
 func CamelCase(name string) string {
 	return capitalized(name, "")
 }

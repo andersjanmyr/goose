@@ -43,6 +43,13 @@ func TestMapValue(t *testing.T) {
 	}
 }
 
+func TestReplaceBc(t *testing.T) {
+	actual := replace("NAME.bc.txt", "NAME", "groovy_dingo")
+	expected := "GROOVY_DINGO.txt"
+	if actual != expected {
+		t.Errorf("Replace(): %v, expected %v", actual, expected)
+	}
+}
 func TestReplaceCc(t *testing.T) {
 	actual := replace("NAME.cc", "NAME", "groovy_dingo")
 	expected := "GroovyDingo"

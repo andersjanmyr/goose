@@ -17,6 +17,7 @@ import (
 var verbose, interactive, force bool
 
 var funcMap = map[string]interface{}{
+	"boacase":          BoaCase,
 	"snakecase":        SnakeCase,
 	"camelcase":        CamelCase,
 	"dromedarcase":     DromedarCase,
@@ -75,7 +76,8 @@ func newFilename(templateDir string, outputDir string, filename string, mappings
 }
 
 func replace(name string, key string, value string) string {
-	tmp := strings.Replace(name, key+".cc", CamelCase(value), -1)
+	tmp := strings.Replace(name, key+".bc", BoaCase(value), -1)
+	tmp = strings.Replace(tmp, key+".cc", CamelCase(value), -1)
 	tmp = strings.Replace(tmp, key+".da", Dasherized(value), -1)
 	tmp = strings.Replace(tmp, key+".dc", DromedarCase(value), -1)
 	tmp = strings.Replace(tmp, key+".sc", SnakeCase(value), -1)
@@ -160,8 +162,9 @@ func (self *MapValue) Set(s string) error {
 func templateHelpText() string {
 	return `
 Available functions in templates are (filename suffixes in parenthesis):
-	camelcase (.cc)					- MyBeautifulTapir
-	dasherized (.da)				- my-beautiful-tapir
+	boacase (.bc)           - MY_BEAUTIFUL_TAPIR
+	camelcase (.cc)			- MyBeautifulTapir
+	dasherized (.da)		- my-beautiful-tapir
 	dromedarcase (.dc)      - myBeautifulTapir
 	snakecase (.sc)         - my_beautiful_tapir
 	spaceseparated (.ss)    - my beautiful tapir
