@@ -13,7 +13,7 @@ dist/goose-linux: $(sources)
 build: dist/goose.exe dist/goose-osx dist/goose-linux
 
 run:
-	go run $(sources) $(url) dummy
+	go run $(sources) $(cmd)
 
 tag:
 	./tag.sh $(VERSION)
