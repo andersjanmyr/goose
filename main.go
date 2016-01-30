@@ -34,7 +34,7 @@ func fileExists(filename string) bool {
 	return true
 }
 
-func generate(templateDir string, outputDir string, mappings map[string]string) error {
+func generate(templateDir string, outputDir string, mappings map[string]interface{}) error {
 	copyFile := func(filename string, info os.FileInfo, err error) error {
 		newPath := newFilename(templateDir, outputDir, filename, mappings)
 		if !info.IsDir() {
@@ -67,10 +67,13 @@ func generate(templateDir string, outputDir string, mappings map[string]string) 
 	return filepath.Walk(templateDir, copyFile)
 }
 
-func newFilename(templateDir string, outputDir string, filename string, mappings map[string]string) string {
+func newFilename(templateDir string, outputDir string, filename string, mappings map[string]interface{}) string {
 	newPath := strings.Replace(filename, templateDir, outputDir, -1)
 	for k, v := range mappings {
-		newPath = replace(newPath, k, v)
+		if k != "DATA" {
+			newPath = replace(newPath, k, v.(string))
+		}
+
 	}
 	return newPath
 }
@@ -105,7 +108,7 @@ func prompt(query string) bool {
 	return reply == "Y"
 }
 
-func generateFile(filename string, newPath string, mappings map[string]string) error {
+func generateFile(filename string, newPath string, mappings map[string]interface{}) error {
 	tmpl, err := template.New(path.Base(filename)).Funcs(funcMap).ParseFiles(filename)
 	if err != nil {
 		return err
@@ -142,19 +145,22 @@ func copyFile(filename string, newPath string) error {
 }
 
 type MapValue struct {
-	Data map[string]string
+	Names map[string]interface{}
+	Data  map[string]interface{}
 }
 
 func (self *MapValue) String() string {
-	return fmt.Sprintf("%s", self.Data)
+	return fmt.Sprintf("%s", self.Names)
 }
 
 func (self *MapValue) Set(s string) error {
-	self.Data = make(map[string]string)
+	self.Names = make(map[string]interface{})
+	self.Data = make(map[string]interface{})
 	pairs := strings.Split(s, ",")
 	for _, p := range pairs {
 		kv := strings.Split(p, "=")
-		self.Data[strings.ToUpper(kv[0])] = kv[1]
+		self.Names[strings.ToUpper(kv[0])] = kv[1]
+		self.Data[kv[0]] = kv[1]
 	}
 	return nil
 }
@@ -219,13 +225,14 @@ func main() {
 	template := args[0]
 	name := args[1]
 
-	var data map[string]string
-	if mapValue.Data != nil {
-		data = mapValue.Data
+	var names map[string]interface{}
+	if mapValue.Names != nil {
+		names = mapValue.Names
+		names["DATA"] = mapValue.Data
 	} else {
-		data = make(map[string]string)
+		names = make(map[string]interface{})
 	}
-	data["NAME"] = name
+	names["NAME"] = name
 
 	log.Println("OPTIONS:")
 	log.Println("verbose:", verbose)
@@ -235,7 +242,7 @@ func main() {
 	log.Println("name:", name)
 	log.Println("templateDir:", templateDir)
 	log.Println("outputDir:", outputDir)
-	log.Println("data:", data)
+	log.Println("data:", names)
 
 	if interactive && force {
 		fmt.Fprintln(os.Stderr, "Options --interactive and --force are mutually exclusive.")
@@ -267,7 +274,7 @@ func main() {
 		}
 	}
 
-	err := generate(selectedTemplateDir, outputDir, data)
+	err := generate(selectedTemplateDir, outputDir, names)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)

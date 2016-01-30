@@ -1,6 +1,7 @@
 package main
 
 import (
+	"io/ioutil"
 	"os"
 	"reflect"
 	"testing"
@@ -9,16 +10,20 @@ import (
 func TestGenerate(t *testing.T) {
 	os.Mkdir("tmp", 0777)
 	force = true
-	err := generate("fixtures/test", "tmp/tapir", map[string]string{"NAME": "tapir"})
+	err := generate("fixtures/test", "tmp/tapir", map[string]interface{}{"NAME": "tapir", "DATA": map[string]interface{}{"dkey": "dvalue"}})
 	if err != nil {
 		t.Errorf("Failed while parsing", err)
+	}
+	_, err = ioutil.ReadFile("tmp/tapir/tapir_dir/TAPIR.txt")
+	if err != nil {
+		t.Errorf("Failed while reading file", err)
 	}
 	os.RemoveAll("tmp")
 }
 
 func TestGenerateMissingFunction(t *testing.T) {
 	os.Mkdir("tmp", 0777)
-	err := generate("fixtures/error", "tmp/fail", map[string]string{"NAME": "tapir"})
+	err := generate("fixtures/error", "tmp/fail", map[string]interface{}{"NAME": "tapir"})
 	if err == nil {
 		t.Errorf("Expected error when parsing template")
 	}
@@ -26,7 +31,7 @@ func TestGenerateMissingFunction(t *testing.T) {
 }
 
 func TestNewFilenameDc(t *testing.T) {
-	actual := newFilename("~/.gooserc", "my-name", "prefixNAME.ccsuffix", map[string]string{"NAME": "my-name"})
+	actual := newFilename("~/.gooserc", "my-name", "prefixNAME.ccsuffix", map[string]interface{}{"NAME": "my-name"})
 	expected := "prefixMyNamesuffix"
 	if actual != expected {
 		t.Errorf("newFilename(): %v, expected %v", actual, expected)
@@ -36,10 +41,15 @@ func TestNewFilenameDc(t *testing.T) {
 func TestMapValue(t *testing.T) {
 	var mapValue MapValue
 	mapValue.Set("account=1234,animal=tapir")
-	actual := mapValue.Data
-	expected := map[string]string{"ACCOUNT": "1234", "ANIMAL": "tapir"}
-	if !reflect.DeepEqual(actual, expected) {
-		t.Errorf("MapValue(): %v, expected %v", actual, expected)
+	actualNames := mapValue.Names
+	actualData := mapValue.Data
+	expectedNames := map[string]interface{}{"ACCOUNT": "1234", "ANIMAL": "tapir"}
+	expectedData := map[string]interface{}{"account": "1234", "animal": "tapir"}
+	if !reflect.DeepEqual(actualNames, expectedNames) {
+		t.Errorf("MapValue(): %v, expected %v", actualNames, expectedNames)
+	}
+	if !reflect.DeepEqual(actualData, expectedData) {
+		t.Errorf("MapValue(): %v, expected %v", actualData, expectedData)
 	}
 }
 
