@@ -38,6 +38,9 @@ func generate(templateDir string, outputDir string, mappings map[string]interfac
 	copyFile := func(filename string, info os.FileInfo, err error) error {
 		newPath := newFilename(templateDir, outputDir, filename, mappings)
 		if !info.IsDir() {
+			if strings.Contains(filename, "/.git/") {
+				return nil
+			}
 			if !force {
 				if interactive && !fileExists(newPath) {
 					if !prompt("Create " + newPath) {
