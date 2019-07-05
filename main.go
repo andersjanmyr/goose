@@ -54,14 +54,14 @@ func generate(templateDir string, outputDir string, mappings map[string]interfac
 			}
 			var dir = path.Dir(newPath)
 			if !fileExists(dir) {
-				os.MkdirAll(dir, 0700)
+				_ = os.MkdirAll(dir, 0700)
 			}
 			err := generateFile(filename, newPath, mappings)
 			if err != nil {
 				if !strings.Contains(err.Error(), "unexpected") {
 					return fmt.Errorf("Cannot generate file %s, %s", filename, err)
 				}
-				copyFile(filename, newPath)
+				_ = copyFile(filename, newPath)
 			}
 
 		}
@@ -117,7 +117,7 @@ func generateFile(filename string, newPath string, mappings map[string]interface
 		return err
 	}
 	f, err := os.Create(newPath)
-	defer f.Close()
+	defer func() { _ = f.Close() }()
 	if err != nil {
 		return err
 	}
@@ -127,7 +127,7 @@ func generateFile(filename string, newPath string, mappings map[string]interface
 	if err != nil {
 		return err
 	}
-	writer.Flush()
+	_ = writer.Flush()
 	if err != nil {
 		return err
 	}
@@ -152,18 +152,18 @@ type MapValue struct {
 	Data  map[string]interface{}
 }
 
-func (self *MapValue) String() string {
-	return fmt.Sprintf("%s", self.Names)
+func (mv *MapValue) String() string {
+	return fmt.Sprintf("%s", mv.Names)
 }
 
-func (self *MapValue) Set(s string) error {
-	self.Names = make(map[string]interface{})
-	self.Data = make(map[string]interface{})
+func (mv *MapValue) Set(s string) error {
+	mv.Names = make(map[string]interface{})
+	mv.Data = make(map[string]interface{})
 	pairs := strings.Split(s, ",")
 	for _, p := range pairs {
 		kv := strings.Split(p, "=")
-		self.Names[strings.ToUpper(kv[0])] = kv[1]
-		self.Data[kv[0]] = kv[1]
+		mv.Names[strings.ToUpper(kv[0])] = kv[1]
+		mv.Data[kv[0]] = kv[1]
 	}
 	return nil
 }
