@@ -1,13 +1,13 @@
 sources = main.go convert.go version.go git.go
 
-dist/goose.exe: $(sources)
-	CGO_ENABLED=0 GOOS=windows GOARCH=386 go build -a -installsuffix cgo -ldflags '-s' -o dist/goose.exe
+dist/goose-linux: $(sources)
+	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -installsuffix cgo -ldflags '-s' -o dist/goose-linux
 
 dist/goose-osx: $(sources)
 	CGO_ENABLED=0 GOOS=darwin GOARCH=amd64 go build -installsuffix cgo -ldflags '-s' -o dist/goose-osx
 
-dist/goose-linux: $(sources)
-	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -installsuffix cgo -ldflags '-s' -o dist/goose-linux
+dist/goose.exe: $(sources)
+	CGO_ENABLED=0 GOOS=windows GOARCH=386 go build -a -installsuffix cgo -ldflags '-s' -o dist/goose.exe
 
 .PHONY: build run tag release clean
 build: dist/goose.exe dist/goose-osx dist/goose-linux
