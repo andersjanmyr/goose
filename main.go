@@ -18,13 +18,21 @@ var verbose, interactive, force bool
 
 var funcMap = map[string]interface{}{
 	"boacase":          BoaCase,
+	"bc":               BoaCase,
 	"snakecase":        SnakeCase,
+	"sc":               SnakeCase,
 	"camelcase":        CamelCase,
+	"cc":               CamelCase,
 	"dromedarcase":     DromedarCase,
+	"dc":               DromedarCase,
 	"dasherized":       Dasherized,
+	"da":               Dasherized,
 	"spaceseparated":   SpaceSeparated,
+	"ss":               SpaceSeparated,
 	"titlecase":        TitleCase,
+	"tc":               TitleCase,
 	"lowercaseletters": LowercaseLetters,
+	"ll":               LowercaseLetters,
 }
 
 func fileExists(filename string) bool {
