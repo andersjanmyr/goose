@@ -8,6 +8,7 @@ import (
 	"log"
 	"net/url"
 	"os"
+	"os/exec"
 	"path"
 	"path/filepath"
 	"strings"
@@ -291,4 +292,21 @@ func main() {
 		os.Exit(1)
 	}
 
+	postScript := filepath.Join(outputDir, "post.sh")
+	if fileExists(postScript) {
+		execute(outputDir, "post.sh")
+	}
+
+}
+
+func execute(dir, script string) {
+	cmd := exec.Command("bash", script)
+	cmd.Dir = dir
+	out, err := cmd.CombinedOutput()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Failed to run 'bash post.sh'.\n%s\n", err)
+		fmt.Fprintln(os.Stderr, string(out))
+		os.Exit(1)
+	}
+	log.Printf("bash post.sh run.\n%s\n", string(out))
 }
