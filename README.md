@@ -30,20 +30,20 @@ $ brew install goose
 
 ### Links
 
-- [OS X](https://github.com/andersjanmyr/goose/releases/download/v1.3.5/goose-osx)
-- [Linux](https://github.com/andersjanmyr/goose/releases/download/v1.3.5/goose-linux)
-- [Windows](https://github.com/andersjanmyr/goose/releases/download/v1.3.5/goose.exe)
-- [Bash completion](https://raw.githubusercontent.com/andersjanmyr/goose/v1.3.5/goose_completion.sh)
+- [OS X](https://github.com/andersjanmyr/goose/releases/download/v1.5.0/goose-osx)
+- [Linux](https://github.com/andersjanmyr/goose/releases/download/v1.5.0/goose-linux)
+- [Windows](https://github.com/andersjanmyr/goose/releases/download/v1.5.0/goose.exe)
+- [Bash completion](https://raw.githubusercontent.com/andersjanmyr/goose/v1.5.0/goose_completion.sh)
 
 ### Curl
 
 ```
 # OS X
-$ curl -L https://github.com/andersjanmyr/goose/releases/download/v1.3.5/goose-osx \
+$ curl -L https://github.com/andersjanmyr/goose/releases/download/v1.5.0/goose-osx \
   > /usr/local/bin/goose
 
 # Linux
-$ curl -L https://github.com/andersjanmyr/goose/releases/download/v1.3.5/goose-linux \
+$ curl -L https://github.com/andersjanmyr/goose/releases/download/v1.5.0/goose-linux \
   > /usr/local/bin/goose
 
 # Make executable
