@@ -4,11 +4,15 @@
 
 Goose, the dumb file generator. Goose takes a file structure and replaces names
 with values. The values can be converted into several formats, `snakecase`,
-`camelcase`, `dromedarcase`, `dasherized`, `spaceseparated` and `titlecase`.
+`camelcase`, `dromedarcase`, `dasherized`, `spaceseparated`, `titlecase` and
+`lowercaseletters`.
 
 The file structure is created exactly as the template file structure with the
 keys replaced with the values. It is a tool similar to Thor and Yeoman, but
 dumber, because dumber is simpler.
+
+The tool also supports running a `post.sh` script if it is in the root of the
+template directory. Read more below
 
 ## Installation
 
@@ -26,10 +30,10 @@ $ brew install goose
 
 ### Links
 
-* [OS X](https://github.com/andersjanmyr/goose/releases/download/v1.3.5/goose-osx)
-* [Linux](https://github.com/andersjanmyr/goose/releases/download/v1.3.5/goose-linux)
-* [Windows](https://github.com/andersjanmyr/goose/releases/download/v1.3.5/goose.exe)
-* [Bash completion](https://raw.githubusercontent.com/andersjanmyr/goose/v1.3.5/goose_completion.sh)
+- [OS X](https://github.com/andersjanmyr/goose/releases/download/v1.3.5/goose-osx)
+- [Linux](https://github.com/andersjanmyr/goose/releases/download/v1.3.5/goose-linux)
+- [Windows](https://github.com/andersjanmyr/goose/releases/download/v1.3.5/goose.exe)
+- [Bash completion](https://raw.githubusercontent.com/andersjanmyr/goose/v1.3.5/goose_completion.sh)
 
 ### Curl
 
@@ -83,7 +87,6 @@ Generating file /db/migrations/articles.js
 As you can see from the data option above, the values given to the `--data`
 option are available to the template as upper cased and as a DATA map with the
 values as they where given.
-
 
 ```
 $ goose
@@ -184,19 +187,49 @@ cool-micro-service/
 └── upload-lambda.sh
 ```
 
+## Example with post.sh
+
+```
+gocmd
+├── NAME.ll
+│   ├── docs
+│   ├── internal
+│   ├── main.go
+│   ├── Makefile
+│   ├── pkg
+│   │   └── NAME.ll
+│   │       └── version.go
+│   ├── README.md
+│   ├── RELEASE_NOTES.md
+│   └── scripts
+│       └── tag.sh
+└── post.sh
+```
+
+```
+$ cat gocmd/post.sh
+#!/bin/bash
+
+pushd {{.NAME}}
+git init
+go mod init github.com/andersjanmyr/{{.NAME}}
+popd
+rm -f post.sh
+```
+
+Note how the `post.sh` cleans up and removes itself after running the commands.
+
 ## List of Functions
 
-* `boacase (bc)` - `MY_BEAUTIFUL_TAPIR`
-* `camelcase (cc)` - `MyBeautifulTapir`
-* `dasherized (da)` - `my-beautiful-tapir`
-* `dromedarcase (dc)` - `myBeautifulTapir`
-* `snakecase (sc)` - `my_beautiful_tapir`
-* `spaceseparated (ss)` - `my beautiful tapir`
-* `titlecase (tc)` - `My Beautiful Tapir`
-* `lowercaseletters (ll)` - `mybeautifultapir`
-
+- `boacase (bc)` - `MY_BEAUTIFUL_TAPIR`
+- `camelcase (cc)` - `MyBeautifulTapir`
+- `dasherized (da)` - `my-beautiful-tapir`
+- `dromedarcase (dc)` - `myBeautifulTapir`
+- `snakecase (sc)` - `my_beautiful_tapir`
+- `spaceseparated (ss)` - `my beautiful tapir`
+- `titlecase (tc)` - `My Beautiful Tapir`
+- `lowercaseletters (ll)` - `mybeautifultapir`
 
 ## Release Notes
 
 A list of changes are in the [RELEASE_NOTES](RELEASE_NOTES.md).
-
